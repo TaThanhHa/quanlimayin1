@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <title>Danh sách đăng kí sử dụng máy in</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .empty {
+      background-color: yellow;
+    }
+    #registerButton {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #registerButton:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h2>Danh sách đăng kí sử dụng máy in</h2>
+  <table id="registrationTable">
+    <thead>
+      <tr>
+        <th>Ngày</th>
+        <th>Ca in</th>
+        <th>Người đăng ký</th>
+      </tr>
+    </thead>
+    <tbody id="registrationBody">
+      <!-- Dữ liệu sẽ được thêm vào đây -->
+    </tbody>
+  </table>
+  <button id="registerButton" onclick="window.location.href='https://script.google.com/macros/s/AKfycbwcBnzYvcuRN1Z86aCDkK2UbAV4FvdYiR-Wx1a3Ov4Tkr8zCxT4UM90tS3qOVFEyQXhoQ/exec'">Đăng kí</button>
+
+  <script>
+    // Gửi yêu cầu đến Google Apps Script để lấy dữ liệu từ bảng tính
+    fetch('https://script.google.com/macros/s/AKfycbwrAPQCT6FD7j7ZXt8AGveGnQrWGpkt_CRR16RqKKejkIvFGz9xenOErSBHD-YzJjskXQ/exec')
+      .then(response => response.json()) // Chuyển đổi phản hồi sang JSON
+      .then(data => {
+        // Xử lý dữ liệu và hiển thị trên bảng HTML
+        const tableBody = document.getElementById('registrationBody');
+        tableBody.innerHTML = ''; // Clear existing content
+        data.forEach(row => {
+          const newRow = document.createElement('tr');
+          newRow.innerHTML = `
+            <td>${row[0]}</td>
+            <td>${row[1]}</td>
+            <td class="${row[2] === '(Trống)' ? 'empty' : ''}">${row[2]}</td>
+          `;
+          tableBody.appendChild(newRow);
+        });
+      })
+      .catch(error => console.error('Lỗi:', error)); // Xử lý lỗi nếu có
+  </script>
+</body>
+</html>
